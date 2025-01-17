@@ -1,0 +1,5 @@
+rootProject.name = 'movie-chose-seating'
+
+include("movie-chose-seating-common")
+include("movie-chose-seating-inner-api")
+include("movie-chose-seating-outer-api")

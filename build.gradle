@@ -1,0 +1,72 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'java'
+}
+
+group 'com.yshy'
+version '1.0-SNAPSHOT'
+
+allprojects{
+    repositories {
+        maven{
+            url 'http://mvn.l.onfishes.cn:8081/repository/maven-public/'
+            allowInsecureProtocol true
+        }
+    }
+}
+
+
+repositories {
+    maven{
+        url 'http://mvn.l.onfishes.cn:8081/repository/maven-public/'
+        allowInsecureProtocol true
+    }
+}
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+// 子项目配置
+subprojects {
+
+    // 子项目插入组件
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java'
+
+    // 编译JDK版本
+    sourceCompatibility = '8'
+
+    // 配置字符编码
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    // 子项目引用依赖
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        implementation 'com.alibaba:fastjson:1.2.56'
+        implementation 'cn.hutool:hutool-all:5.8.8'
+
+        implementation 'cn.jhsjgo.basemodeule:common-model:0.0.4' //公共组件
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
+
+    // 开启构建bootJar
+    tasks.bootJar {
+        enabled = true
+    }
+    // tasks.jar {
+    // enabled = true
+    // }
+
+}
